@@ -27,9 +27,17 @@ const heroSprite =
     ? new Sprite({
         resource: resources.images.hero,
         frameSize: new Vector2(32, 32),
-        vFrames: 3,
-        hFrames: 8,
+        vFrames: 8,
+        hFrames: 3,
         frame: 1,
+      })
+    : null;
+
+const shadowSprite =
+  'shadow' in resources.images
+    ? new Sprite({
+        resource: resources.images.shadow,
+        frameSize: new Vector2(32, 32),
       })
     : null;
 
@@ -52,12 +60,27 @@ const draw = () => {
     }
 
     if (heroSprite) {
-      const heroPos = new Vector2(16 * 5, 16 * 5);
+      // сдвигаем героя на 5 клеток
+      const heroPos = new Vector2(16 * 6, 16 * 5);
+
+      // но герой находится не по середине клетки, т к вокруг есть прозрачный фон
+      const heroOffset = new Vector2(-8, -21);
+      const heroPosX = heroPos.x + heroOffset.x;
+      const heroPosY = heroPos.y + heroOffset.y;
+
       heroSprite.drawImage({
         ctx,
-        x: heroPos.x,
-        y: heroPos.y,
+        x: heroPosX,
+        y: heroPosY,
       });
+
+      if (shadowSprite) {
+        shadowSprite.drawImage({
+          ctx,
+          x: heroPosX,
+          y: heroPosY,
+        });
+      }
     }
   }
 };

@@ -17,13 +17,13 @@ export class Sprite {
   resource: {
     image: CanvasImageSource;
     isLoaded: boolean;
-  };
-  frame: number;
-  frameSize: Vector2;
-  vFrames: number;
-  scale: number;
-  position: Vector2;
-  hFrames: number;
+  }; // sprite, т.е. картинка, из которой мы вырежем человечков, или возьем ее полностью
+  frame: number; // frame that we want to show
+  frameSize: Vector2; // ширина и высота картинки, которую мы вырезаем
+  vFrames: number; // число картинок по вертикали в спрайте
+  scale: number; // how large to draw this image
+  position: Vector2; // where to draw this image (top left corner)
+  hFrames: number; // число картинок по горизонтали в спрайте
   frameMap: any;
 
   constructor({ resource, frameSize, hFrames, vFrames, frame, scale, position }: TProps) {
@@ -40,6 +40,7 @@ export class Sprite {
   }
 
   buildFrameMap() {
+    // создаем коллекцию Map, чтобы было удобно получать координаты картинки в sheet
     let frameCount = 0;
 
     for (let v = 0; v < this.vFrames; v++) {
@@ -75,8 +76,8 @@ export class Sprite {
       this.resource.image,
       frameCoordinateX,
       frameCoordinateY, // Top Y corner of frame
-      frameSizeX, // how much to crop from the sprite sheet (x)
-      frameSizeY, // how much to crop from the sprite sheet (y)
+      frameSizeX, // how much to crop from the sprite sheet (x) ширина картинки, которую мы вырезаем
+      frameSizeY, // how much to crop from the sprite sheet (y) высота картинки, которую мы вырезаем
       x, // where to place this on canvas tag x
       y, // where to place this on canvas tag y
       frameSizeX * this.scale, // how large to scale it (x)
