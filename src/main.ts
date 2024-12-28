@@ -2,6 +2,8 @@ import './style.css';
 import { resources } from './Resource.ts';
 import { Sprite } from './Sprite.ts';
 import { Vector2 } from './Vector2.ts';
+import { GameLoop } from './GameLoop.ts';
+import { DOWN, Input, LEFT, RIGHT, UP } from './Input.ts';
 
 const canvas: HTMLCanvasElement | null = document.querySelector('#canvas-game');
 const ctx = canvas?.getContext('2d');
@@ -41,6 +43,11 @@ const shadowSprite =
       })
     : null;
 
+const input = new Input();
+
+// сдвигаем героя на 5 клеток
+const heroPos = new Vector2(16 * 6, 16 * 5);
+
 const draw = () => {
   if (ctx) {
     if (skySprite) {
@@ -60,9 +67,6 @@ const draw = () => {
     }
 
     if (heroSprite) {
-      // сдвигаем героя на 5 клеток
-      const heroPos = new Vector2(16 * 6, 16 * 5);
-
       // но герой находится не по середине клетки, т к вокруг есть прозрачный фон
       const heroOffset = new Vector2(-8, -21);
       const heroPosX = heroPos.x + heroOffset.x;
@@ -85,6 +89,33 @@ const draw = () => {
   }
 };
 
-setInterval(() => {
-  draw();
-}, 300);
+const update = () => {
+  if (!heroSprite) {
+    return;
+  }
+  if (input.direction === DOWN) {
+    heroPos.y += 1;
+    heroSprite.frame = 0;
+  }
+
+  if (input.direction === UP) {
+    heroPos.y -= 1;
+    heroSprite.frame = 6;
+  }
+
+  if (input.direction === LEFT) {
+    heroPos.x -= 1;
+    heroSprite.frame = 9;
+  }
+  if (input.direction === RIGHT) {
+    heroPos.x += 1;
+    heroSprite.frame = 3;
+  }
+};
+
+// setInterval(() => {
+//   draw();
+// }, 300);
+
+const gameLoop = new GameLoop({ update, render: draw });
+gameLoop.start();

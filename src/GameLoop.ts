@@ -18,7 +18,7 @@ export class GameLoop {
 
     this.lastFrameTime = 0;
     this.accumulatedTime = 0;
-    this.timeStep = 1000/60; // 60 frames per second
+    this.timeStep = 1000 / 60; // 60 frames per second
 
     // request animation frame id
     this.rafId = null;
@@ -45,20 +45,19 @@ export class GameLoop {
 
     // без requestAnimationFrame анимация будет происходить слишком часто, и будет нехватка памяти
     this.rafId = requestAnimationFrame(this.mainLoop);
-  }
+  };
 
   start = () => {
     if (!this.isRunning) {
       this.isRunning = true;
       this.rafId = requestAnimationFrame(this.mainLoop);
     }
-  }
+  };
 
   stop = () => {
     if (this.rafId) {
       cancelAnimationFrame(this.rafId);
     }
-      this.isRunning = false;
-
-  }
+    this.isRunning = false;
+  };
 }
